@@ -1,0 +1,16 @@
+{
+  "name": "phonebook-app",
+  "version": "1.0.0",
+  "description": "Create this project for practice node.js",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "Monir Khan",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^5.13.14"
+  }
+}
