@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const contactSchema = new mongoose.Schema({
   name: {
@@ -7,14 +8,24 @@ const contactSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
-
   number: {
     type: Number,
     required: [true, 'A contact must have a number'],
-    min: [10, 'A contact number must be less than 10'],
+  },
+  email: {
+    type: String,
+    validate: [validator.isEmail, 'Please provide a valid email'],
+    lowercase: true,
+  },
+  photo: {
+    type: String,
+    default: 'default.jpg',
+  },
+  hide: {
+    type: Boolean,
+    default: false,
   },
 });
 
 const Contact = mongoose.model('Contact', contactSchema);
-
 module.exports = Contact;
