@@ -1,89 +1,55 @@
-const Contact = require('../models/contactModel');
+const Contact = require('./../models/contactModel');
+const catchAsync = require('./../utils/catchAsync');
 
-exports.getAllContacts = async function (req, res, next) {
-  try {
-    const contacts = await Contact.find();
+exports.getAllContacts = catchAsync(async function (req, res, next) {
+  const contacts = await Contact.find();
 
-    res.status(200).json({
-      status: 'success',
-      results: contacts.length,
-      data: contacts,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'success',
+    results: contacts.length,
+    data: contacts,
+  });
+});
 
-exports.createContact = async function (req, res, next) {
-  try {
-    const newContacts = await Contact.create(req.body);
+exports.createContact = catchAsync(async function (req, res, next) {
+  const newContacts = await Contact.create(req.body);
 
-    res.status(201).json({
-      status: 'success',
-      data: {
-        contact: newContacts,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+  res.status(201).json({
+    status: 'success',
+    data: {
+      contact: newContacts,
+    },
+  });
+});
 
-exports.getContactById = async function (req, res, next) {
-  try {
-    const contact = await Contact.findById(req.params.id);
+exports.getContactById = catchAsync(async function (req, res, next) {
+  const contact = await Contact.findById(req.params.id);
 
-    res.status(200).json({
-      status: 'success',
-      data: {
-        contact,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'success',
+    data: {
+      contact,
+    },
+  });
+});
 
-exports.updateContact = async function (req, res, next) {
-  try {
-    const contact = await Contact.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+exports.updateContact = catchAsync(async function (req, res, next) {
+  const contact = await Contact.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-    res.status(200).json({
-      status: 'success',
-      data: { contact },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'success',
+    data: { contact },
+  });
+});
 
-exports.deleteContact = async function (req, res, next) {
-  try {
-    const contact = await Contact.findByIdAndDelete(req.params.id);
+exports.deleteContact = catchAsync(async function (req, res, next) {
+  await Contact.delete(req.params.id);
 
-    res.status(204).json({
-      status: 'success',
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err,
-    });
-  }
-};
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
