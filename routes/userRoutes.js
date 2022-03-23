@@ -10,11 +10,11 @@ router.post('/login', authController.login);
 router.use(authController.protect);
 
 router.patch('/updateMyPassword', authController.updateMyPassword);
+router.patch('/updateMe', userController.updateMe);
 
-router
-  .route('/')
-  .get(authController.protect, authController.restrictTo('admin'), userController.getAllUsers)
-  .post(userController.createUser);
+router.use(authController.restrictTo('admin'));
+
+router.route('/').get(userController.getAllUsers).post(userController.createUser);
 router
   .route('/:id')
   .get(userController.getUserById)
