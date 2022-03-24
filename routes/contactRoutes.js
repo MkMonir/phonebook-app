@@ -4,6 +4,8 @@ const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
+router.patch('/hideContact/:id', contactController.hideContact);
+
 router.route('/').get(contactController.getAllContacts).post(contactController.createContact);
 
 router

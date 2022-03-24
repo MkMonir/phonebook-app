@@ -5,12 +5,13 @@ const contactSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'A contact must have a name'],
-    unique: true,
     trim: true,
+    unique: true,
   },
   number: {
-    type: Number,
+    type: [Number],
     required: [true, 'A contact must have a number'],
+    unique: true,
   },
   email: {
     type: String,
@@ -21,11 +22,25 @@ const contactSchema = new mongoose.Schema({
     type: String,
     default: 'default.jpg',
   },
+  company: {
+    type: String,
+    trim: true,
+  },
+  jobTitle: {
+    type: String,
+    trim: true,
+  },
   hide: {
     type: Boolean,
     default: false,
   },
 });
 
+contactSchema.pre(/^find/, function (next) {
+  this.find({ hide: { $ne: true } });
+  next();
+});
+
 const Contact = mongoose.model('Contact', contactSchema);
+
 module.exports = Contact;
