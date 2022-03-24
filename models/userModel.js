@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
     default: 'user',
   },
   passwordChangedAt: Date,
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -72,6 +76,11 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   }
   return false;
 };
+
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
 
 const User = mongoose.model('User', userSchema);
 
